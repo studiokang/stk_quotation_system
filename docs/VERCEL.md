@@ -17,7 +17,8 @@
 
 ## 환경 변수
 
-`turbo.json`의 `globalPassThroughEnv`에 나열된 변수를 Vercel **Environment Variables**에 모두 등록해야 합니다. (없으면 Turborepo strict 모드에서 빌드 실패)
+`turbo.json`의 **`globalEnv`** 에 나열된 변수를 Vercel **Environment Variables**에 모두 등록해야 합니다.  
+Turborepo **strict** 모드에서는 `globalEnv` / `env`에 선언된 변수만 태스크에 전달되므로, `DATABASE_URL` 누락 시 `@repo/db#db:generate` 가 실패할 수 있습니다.
 
 ---
 

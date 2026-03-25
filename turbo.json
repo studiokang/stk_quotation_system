@@ -1,7 +1,7 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
-  "globalPassThroughEnv": [
+  "globalEnv": [
     "DATABASE_URL",
     "JWT_SECRET",
     "RESEND_API_KEY",
@@ -10,6 +10,13 @@
     "USE_AI_QUOTE",
     "UPSTASH_REDIS_REST_URL",
     "UPSTASH_REDIS_REST_TOKEN"
+  ],
+  "globalPassThroughEnv": [
+    "VERCEL",
+    "VERCEL_ENV",
+    "VERCEL_URL",
+    "CI",
+    "NODE_ENV"
   ],
   "tasks": {
     "build": {
