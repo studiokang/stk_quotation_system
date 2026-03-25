@@ -1,0 +1,73 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  createdAt DateTime   @default(now())
+  responses Response[]
+}
+
+model Survey {
+  id        String     @id @default(cuid())
+  title     String
+  schema    Json
+  questions Question[]
+  responses Response[]
+}
+
+model Question {
+  id       String   @id @default(cuid())
+  surveyId String
+  survey   Survey   @relation(fields: [surveyId], references: [id])
+  type     String
+  label    String
+  options  Json?
+  order    Int
+  required Boolean  @default(true)
+  answers  Answer[]
+
+  @@index([surveyId])
+}
+
+model Response {
+  id        String   @id @default(cuid())
+  userId    String
+  surveyId  String
+  user      User     @relation(fields: [userId], references: [id])
+  survey    Survey   @relation(fields: [surveyId], references: [id])
+  createdAt DateTime @default(now())
+  answers   Answer[]
+  quote     Quote?
+
+  @@index([userId])
+  @@index([surveyId])
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  responseId String
+  questionId String
+  value      String
+  response   Response @relation(fields: [responseId], references: [id])
+  question   Question @relation(fields: [questionId], references: [id])
+
+  @@index([responseId])
+  @@index([questionId])
+}
+
+model Quote {
+  id         String   @id @default(cuid())
+  responseId String   @unique
+  response   Response @relation(fields: [responseId], references: [id])
+  totalPrice Int
+  detailJson Json
+  pdfPath    String?
+  createdAt  DateTime @default(now())
+}

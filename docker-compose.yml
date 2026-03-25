@@ -1,0 +1,27 @@
+# =============================================================================
+# 로컬 PostgreSQL을 사용하는 경우 이 파일은 필요하지 않습니다.
+# 이 파일은 Docker 기반 PostgreSQL을 사용할 때만 실행하세요:
+#   docker compose up -d
+#
+# 로컬 PostgreSQL 사용 시:
+#   1. packages/db/.env 에 DATABASE_URL 설정
+#   2. psql -U postgres -c "CREATE DATABASE survey_quote;"
+#   3. cd packages/db && npx prisma migrate dev --name init
+# =============================================================================
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: survey-quote-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: survey_quote
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
