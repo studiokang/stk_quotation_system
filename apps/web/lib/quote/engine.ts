@@ -22,7 +22,7 @@ interface PricingRule {
  */
 export async function generateQuote(responseId: string): Promise<string> {
   const log = logger.child({ responseId, module: 'quote-engine' });
-  log.info('Quote generation started');
+  log.info({}, 'Quote generation started');
 
   const response = await withDbResilience(
     () =>
@@ -103,13 +103,13 @@ async function generateQuotePDFAndEmail(params: PDFEmailParams): Promise<void> {
   const { quoteId, responseId, userEmail, surveyTitle, totalPrice, items } = params;
   const log = logger.child({ quoteId, responseId, module: 'quote-engine' });
 
-  log.info('PDF generation started');
+  log.info({}, 'PDF generation started');
   const { generateQuotePDF } = await import('@repo/pdf');
   const pdfPath = await generateQuotePDF(quoteId);
   log.info({ pdfPath }, 'PDF generation completed');
 
   if (!env.RESEND_API_KEY) {
-    log.warn('RESEND_API_KEY not set, skipping email');
+    log.warn({}, 'RESEND_API_KEY not set, skipping email');
     return;
   }
 

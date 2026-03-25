@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     try {
       body = await request.json();
     } catch {
-      log.warn('Invalid JSON body');
+      log.warn({}, 'Invalid JSON body');
       return NextResponse.json({ error: '잘못된 요청 형식입니다.' }, { status: 400 });
     }
 
@@ -33,7 +33,7 @@ export async function POST(request: Request) {
 
     const payload = verifyToken(token);
     if (!payload) {
-      log.warn('Invalid or expired token');
+      log.warn({}, 'Invalid or expired token');
       return NextResponse.json({ error: '유효하지 않거나 만료된 토큰입니다.' }, { status: 401 });
     }
 
