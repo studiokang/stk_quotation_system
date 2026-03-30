@@ -70,23 +70,16 @@ function logEnvValidationIssues(error: z.ZodError) {
   }
 }
 
-function shouldSkipEnvValidation(): boolean {
-  return (
-    process.env.SKIP_ENV_VALIDATION === 'true' ||
-    process.env.NEXT_PHASE === 'phase-production-build' ||
-    (process.env.NODE_ENV === 'production' &&
-      typeof window === 'undefined' &&
-      !process.env.DATABASE_URL)
-  );
-}
-
 function createEnv(): Env {
-  if (shouldSkipEnvValidation()) {
+  // 빌드 타임에는 검증 건너뜀
+  if (
+    process.env.SKIP_ENV_VALIDATION === 'true' ||
+    process.env.NEXT_PHASE === 'phase-production-build'
+  ) {
     return process.env as unknown as Env;
   }
 
   const parsed = envSchema.safeParse(process.env);
-
   if (!parsed.success) {
     logEnvValidationIssues(parsed.error);
     const summary = parsed.error.issues
@@ -95,9 +88,16 @@ function createEnv(): Env {
     console.error('Environment validation failed — fields:', summary);
     throw new Error(`Invalid environment variables — check server logs (${summary})`);
   }
-
   return parsed.data;
 }
 
-/** 검증된 환경 변수. `process.env` 직접 사용 대신 이 객체를 import 하세요. */
-export const env = createEnv();
+// 빌드 타임에는 lazy하게 평가되도록 함수로 export
+let _env: Env | null = null;
+export const env = new Proxy({} as Env, {
+  get(_, key: string) {
+    if (!_env) {
+      _env = createEnv();
+    }
+    return _env[key as keyof Env];
+  },
+});
