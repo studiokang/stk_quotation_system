@@ -3,14 +3,14 @@
   "ui": "tui",
   "globalEnv": [
     "DATABASE_URL",
+    "EMAIL_FROM",
+    "INTERNAL_QUOTE_SECRET",
     "JWT_SECRET",
     "NEXTAUTH_SECRET",
-    "RESEND_API_KEY",
-    "EMAIL_FROM",
     "NEXT_PUBLIC_BASE_URL",
-    "NEXT_PUBLIC_SUPABASE_URL",
     "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-    "USE_AI_QUOTE",
+    "NEXT_PUBLIC_SUPABASE_URL",
+    "RESEND_API_KEY",
     "UPSTASH_REDIS_REST_URL",
     "UPSTASH_REDIS_REST_TOKEN"
   ],
@@ -28,14 +28,14 @@
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
       "env": [
         "DATABASE_URL",
+        "EMAIL_FROM",
+        "INTERNAL_QUOTE_SECRET",
         "JWT_SECRET",
         "NEXTAUTH_SECRET",
-        "RESEND_API_KEY",
-        "EMAIL_FROM",
         "NEXT_PUBLIC_BASE_URL",
-        "NEXT_PUBLIC_SUPABASE_URL",
         "NEXT_PUBLIC_SUPABASE_ANON_KEY",
-        "USE_AI_QUOTE",
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "RESEND_API_KEY",
         "UPSTASH_REDIS_REST_URL",
         "UPSTASH_REDIS_REST_TOKEN"
       ]
