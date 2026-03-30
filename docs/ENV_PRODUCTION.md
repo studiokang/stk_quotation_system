@@ -50,7 +50,7 @@ openssl rand -base64 48
 | `RESEND_API_KEY` | Resend 대시보드에서 발급 |
 | `EMAIL_FROM` | Resend에 **도메인·발신 주소 검증**된 이메일 |
 | `NEXT_PUBLIC_BASE_URL` | 배포 URL, 예: `https://<프로젝트>.vercel.app` |
-| `USE_AI_QUOTE` | `false` 권장 (미사용 시) |
+| `INTERNAL_QUOTE_SECRET` | **32자 이상** 랜덤 문자열 — `POST /api/quote/generate` 서버 간 호출 인증용 |
 
 선택: `UPSTASH_REDIS_*` (레이트 리밋 등 사용 시)
 

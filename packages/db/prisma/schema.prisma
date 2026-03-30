@@ -1,5 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Vercel(리눅스) 빌드·런타임에서 엔진을 찾지 못하는 오류 방지 — 로컬은 native
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
 datasource db {

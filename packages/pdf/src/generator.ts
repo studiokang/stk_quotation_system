@@ -1,6 +1,8 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import os from 'node:os';
+import puppeteerCore from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import { prisma } from '@repo/db';
 import { renderQuoteHTML, DEFAULT_ISSUER } from './template';
 import type { QuoteData, QuoteLineItem } from './template';
@@ -52,10 +54,11 @@ export async function generateQuotePDF(quoteId: string): Promise<string> {
   await fs.mkdir(PDF_DIR, { recursive: true });
   const filePath = path.join(PDF_DIR, `${quoteId}.pdf`);
 
-  const puppeteer = await import('puppeteer');
-  const browser = await puppeteer.default.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+  const browser = await puppeteerCore.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
   });
 
   try {

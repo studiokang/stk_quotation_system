@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@repo/db": "workspace:*",
-    "puppeteer": "^21.7.0"
+    "@sparticuz/chromium": "131.0.0",
+    "puppeteer-core": "23.11.1"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

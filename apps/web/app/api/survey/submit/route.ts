@@ -93,7 +93,10 @@ export async function POST(request: Request) {
 async function triggerQuoteGeneration(responseId: string) {
   await fetch(`${env.NEXT_PUBLIC_BASE_URL}/api/quote/generate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'x-internal-quote-secret': env.INTERNAL_QUOTE_SECRET,
+    },
     body: JSON.stringify({ responseId }),
   });
 }

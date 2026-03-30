@@ -1,5 +1,8 @@
 import path from 'node:path';
 import fs from 'node:fs/promises';
+import os from 'node:os';
+import puppeteerCore from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 
 export interface QuotePdfData {
   quoteId: string;
@@ -55,15 +58,21 @@ function buildHtml(data: QuotePdfData): string {
 </html>`;
 }
 
+const DEFAULT_PDF_DIR = path.join(os.tmpdir(), 'quotes');
+
 export async function generateQuotePdf(
   data: QuotePdfData,
-  outputDir: string = './output',
+  outputDir: string = DEFAULT_PDF_DIR,
 ): Promise<string> {
   await fs.mkdir(outputDir, { recursive: true });
   const filePath = path.join(outputDir, `quote-${data.quoteId}.pdf`);
 
-  const puppeteer = await import('puppeteer');
-  const browser = await puppeteer.default.launch({ headless: true });
+  const browser = await puppeteerCore.launch({
+    args: chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath: await chromium.executablePath(),
+    headless: chromium.headless,
+  });
   try {
     const page = await browser.newPage();
     await page.setContent(buildHtml(data), { waitUntil: 'networkidle0' });

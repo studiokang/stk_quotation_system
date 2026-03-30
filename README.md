@@ -111,7 +111,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `NEXT_PUBLIC_BASE_URL` | Yes | Public URL of the application |
 | `UPSTASH_REDIS_REST_URL` | No | Upstash Redis URL for rate limiting |
 | `UPSTASH_REDIS_REST_TOKEN` | No | Upstash Redis token |
-| `USE_AI_QUOTE` | No | Enable AI-powered quote generation (default: false) |
+| `INTERNAL_QUOTE_SECRET` | Yes | Min 32 chars; authenticates server-side `POST /api/quote/generate` |
 
 ## Project Structure
 
