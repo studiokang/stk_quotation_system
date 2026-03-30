@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import { SurveyStarter } from '@/components/SurveyStarter';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const surveys = await prisma.survey.findMany({
     select: { id: true, title: true },
