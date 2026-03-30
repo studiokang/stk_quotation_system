@@ -3,7 +3,7 @@ import { prisma, withDbResilience, safeDbError } from '@/lib/prisma';
 import { verifyToken } from '@/lib/jwt';
 import { env } from '@/lib/env';
 import { surveySubmitSchema, validateBody } from '@/lib/validators';
-import { submitLimiter, checkRateLimit } from '@/lib/rate-limit';
+import { getSubmitLimiter, checkRateLimit } from '@/lib/rate-limit';
 import { requestId, createRequestLogger } from '@/lib/logger';
 
 export const dynamic = 'force-dynamic';
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: '유효하지 않거나 만료된 토큰입니다.' }, { status: 401 });
     }
 
-    const rl = await checkRateLimit(submitLimiter, token);
+    const rl = await checkRateLimit(getSubmitLimiter(), token);
     if (rl.limited) {
       log.warn({ remaining: rl.remaining, reset: rl.reset }, 'Rate limit exceeded');
       return NextResponse.json(
