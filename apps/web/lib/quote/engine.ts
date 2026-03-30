@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@repo/db';
 import { prisma, withDbResilience } from '@/lib/prisma';
 import { env } from '@/lib/env';
 import { logger } from '@/lib/logger';
@@ -69,7 +69,7 @@ export async function generateQuote(responseId: string): Promise<string> {
   const quote = await withDbResilience(
     () =>
       prisma.quote.create({
-        data: { responseId, totalPrice, detailJson: items as Prisma.InputJsonValue },
+        data: { responseId, totalPrice, detailJson: items as unknown as Prisma.InputJsonValue },
       }),
     'engine-create-quote',
   );

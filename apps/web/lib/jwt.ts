@@ -1,9 +1,5 @@
-import jwt, { type Secret } from 'jsonwebtoken';
+import jwt, { type SignOptions } from 'jsonwebtoken';
 import { env } from '@/lib/env';
-
-function jwtSecret(): Secret {
-  return env.JWT_SECRET as Secret;
-}
 
 export interface SurveyTokenPayload {
   userId: string;
@@ -19,7 +15,7 @@ export interface SurveyTokenPayload {
  */
 export function verifyToken(token: string): SurveyTokenPayload | null {
   try {
-    const decoded = jwt.verify(token, jwtSecret(), {
+    const decoded = jwt.verify(token, env.JWT_SECRET, {
       algorithms: ['HS256'],
       maxAge: '7d',
     }) as SurveyTokenPayload;
@@ -37,8 +33,8 @@ export function verifyToken(token: string): SurveyTokenPayload | null {
  * Only for server-side use (token generation endpoints).
  */
 export function signToken(payload: { userId: string; surveyId: string }, expiresIn = '7d'): string {
-  return jwt.sign(payload, jwtSecret(), {
+  return jwt.sign(payload, env.JWT_SECRET, {
     algorithm: 'HS256',
     expiresIn,
-  });
+  } as SignOptions);
 }

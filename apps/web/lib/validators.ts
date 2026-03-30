@@ -42,7 +42,8 @@ export function validateBody<T>(
   }
 
   const firstIssue = result.error.issues[0];
-  const field = firstIssue?.path.length > 0 ? firstIssue.path.join('.') : undefined;
+  const path = firstIssue?.path;
+  const field = path && path.length > 0 ? path.join('.') : undefined;
 
   return {
     success: false,
