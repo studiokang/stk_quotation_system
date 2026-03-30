@@ -72,6 +72,10 @@ function logEnvValidationIssues(error: z.ZodError) {
 
 function createEnv(): Env {
   // 빌드 타임에는 검증 건너뜀
+  if (typeof window === 'undefined' && process.env.VERCEL === '1') {
+    return process.env as unknown as Env;
+  }
+
   if (
     process.env.SKIP_ENV_VALIDATION === 'true' ||
     process.env.NEXT_PHASE === 'phase-production-build'

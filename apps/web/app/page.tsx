@@ -4,10 +4,16 @@ import { SurveyStarter } from '@/components/SurveyStarter';
 export const dynamic = 'force-dynamic';
 
 export default async function HomePage() {
-  const surveys = await prisma.survey.findMany({
-    select: { id: true, title: true },
-    orderBy: { id: 'asc' },
-  });
+  let surveys: { id: string; title: string }[] = [];
+
+  try {
+    surveys = await prisma.survey.findMany({
+      select: { id: true, title: true },
+      orderBy: { id: 'asc' },
+    });
+  } catch (err) {
+    console.error('[HomePage] DB error:', err);
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-8 bg-gradient-to-b from-gray-50 to-white">
