@@ -13,7 +13,8 @@
     "RESEND_API_KEY",
     "UPSTASH_REDIS_REST_URL",
     "UPSTASH_REDIS_REST_TOKEN",
-    "USE_AI_QUOTE"
+    "USE_AI_QUOTE",
+    "SKIP_ENV_VALIDATION"
   ],
   "globalPassThroughEnv": [
     "VERCEL",
@@ -39,7 +40,8 @@
         "RESEND_API_KEY",
         "UPSTASH_REDIS_REST_URL",
         "UPSTASH_REDIS_REST_TOKEN",
-        "USE_AI_QUOTE"
+        "USE_AI_QUOTE",
+        "SKIP_ENV_VALIDATION"
       ]
     },
     "lint": {

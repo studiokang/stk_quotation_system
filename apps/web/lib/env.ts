@@ -70,11 +70,13 @@ function logEnvValidationIssues(error: z.ZodError) {
   }
 }
 
-/** `next build` 시 라우트 번들 평가(collect page data) 단계에는 env가 비어 있거나 불완전할 수 있음 */
 function shouldSkipEnvValidation(): boolean {
   return (
     process.env.SKIP_ENV_VALIDATION === 'true' ||
-    process.env.NEXT_PHASE === 'phase-production-build'
+    process.env.NEXT_PHASE === 'phase-production-build' ||
+    (process.env.NODE_ENV === 'production' &&
+      typeof window === 'undefined' &&
+      !process.env.DATABASE_URL)
   );
 }
 
