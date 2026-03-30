@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma, withDbResilience, safeDbError } from '@/lib/prisma';
 import { requestId, createRequestLogger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 export interface QuoteStatusResponse {
   status: 'pending' | 'ready';
   quote: {

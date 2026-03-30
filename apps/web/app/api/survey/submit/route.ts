@@ -6,6 +6,9 @@ import { surveySubmitSchema, validateBody } from '@/lib/validators';
 import { submitLimiter, checkRateLimit } from '@/lib/rate-limit';
 import { requestId, createRequestLogger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 export async function POST(request: Request) {
   const reqId = requestId();
   const log = createRequestLogger(reqId, 'POST', '/api/survey/submit');

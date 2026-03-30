@@ -5,6 +5,8 @@ import { prisma, withDbResilience } from '@/lib/prisma';
 import { signToken } from '@/lib/jwt';
 import { requestId, createRequestLogger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 /** PgBouncer(transaction) 환경에서 upsert가 실패하는 경우가 있어 find + create로 처리 */
 async function findOrCreateUser(email: string) {
   const existing = await prisma.user.findUnique({

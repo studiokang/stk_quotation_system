@@ -3,6 +3,8 @@ import fs from 'node:fs/promises';
 import { prisma, withDbResilience, safeDbError } from '@/lib/prisma';
 import { requestId, createRequestLogger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(
   _request: Request,
   { params }: { params: { responseId: string } },
