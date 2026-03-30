@@ -1,7 +1,18 @@
 import { Resend } from 'resend';
 import fs from 'node:fs';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+
+function getResend(): Resend {
+  if (!_resend) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error('RESEND_API_KEY is not set');
+    }
+    _resend = new Resend(apiKey);
+  }
+  return _resend;
+}
 
 interface SendQuoteEmailParams {
   to: string;
@@ -32,7 +43,7 @@ export async function sendQuoteEmail(params: SendQuoteEmailParams) {
 
   const pdfBuffer = fs.readFileSync(pdfPath);
 
-  const { data, error } = await resend.emails.send({
+  const { data, error } = await getResend().emails.send({
     from,
     to,
     subject: `[AI STUDIO] 맞춤 견적서가 도착했습니다`,
@@ -92,7 +103,7 @@ export async function sendSurveyEmail(to: string, token: string, fromOverride?: 
   const from = resolveFrom(fromOverride);
   const surveyUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/survey?token=${token}`;
 
-  const { error } = await resend.emails.send({
+  const { error } = await getResend().emails.send({
     from,
     to,
     subject: '맞춤 견적을 위한 설문을 작성해 주세요',
