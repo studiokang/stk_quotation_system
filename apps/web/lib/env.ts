@@ -70,7 +70,19 @@ function logEnvValidationIssues(error: z.ZodError) {
   }
 }
 
+/** `next build` 시 라우트 번들 평가(collect page data) 단계에는 env가 비어 있거나 불완전할 수 있음 */
+function shouldSkipEnvValidation(): boolean {
+  return (
+    process.env.SKIP_ENV_VALIDATION === 'true' ||
+    process.env.NEXT_PHASE === 'phase-production-build'
+  );
+}
+
 function createEnv(): Env {
+  if (shouldSkipEnvValidation()) {
+    return process.env as unknown as Env;
+  }
+
   const parsed = envSchema.safeParse(process.env);
 
   if (!parsed.success) {
