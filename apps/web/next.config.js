@@ -6,8 +6,10 @@ import { PrismaPlugin } from '@prisma/nextjs-monorepo-workaround-plugin';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** 모노레포 루트 — 서버리스 번들에 workspace 패키지(Prisma 등) 추적용 */
 const monorepoRoot = path.join(__dirname, '../..');
-/** Next 기본은 apps/web만 .env 로드 — 루트 `.env`의 NEXT_PUBLIC_* 등 서버 전역에 반영 (pnpm은 @next/env 직접 해석 불가) */
-dotenv.config({ path: path.join(monorepoRoot, '.env') });
+/** 로컬 개발만 루트 `.env` 로드 — Vercel 프로덕션 빌드에는 파일이 없으므로 생략 */
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config({ path: path.join(monorepoRoot, '.env') });
+}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
