@@ -22,12 +22,23 @@ function createPrismaClient(): PrismaClient {
   });
 }
 
-/** Singleton Prisma client with query timeout and retry support. */
-export const prisma = globalForPrisma.prisma ?? createPrismaClient();
-
-if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
+function getPrisma(): PrismaClient {
+  if (!globalForPrisma.prisma) {
+    globalForPrisma.prisma = createPrismaClient();
+  }
+  return globalForPrisma.prisma;
 }
+
+/**
+ * Singleton Prisma client — 지연 초기화로 `next build` 시 라우트 번들만 로드될 때
+ * DATABASE_URL 없이도 모듈 평가가 실패하지 않도록 함.
+ */
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, prop) {
+    const client = getPrisma();
+    return Reflect.get(client, prop, client);
+  },
+});
 
 /**
  * Execute a database operation with timeout and automatic retry on transient failures.
